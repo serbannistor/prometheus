@@ -35,5 +35,5 @@ VOLUME      [ "/data" ]
 VOLUME      [ "/etc/prometheus" ]
 
 WORKDIR     /data
-HEALTHCHECK CMD wget -q --spider http://localhost:9090/targets --interval=30s --timeout=30s --start-period=10s --retries=3
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD wget -q --spider http://localhost:9090/targets
 ENTRYPOINT  [ "/bin/start.sh" ]
