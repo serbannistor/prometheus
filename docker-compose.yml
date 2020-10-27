@@ -1,0 +1,30 @@
+version: "2"
+
+services:
+  prometheus:
+    container_name: prometheus
+    image: serbannistor/prometheus:latest
+    ports:
+      - "9090:9090/tcp"
+    environment:
+      WEB_LISTEN_ADDRESS: "0.0.0.0:9090"
+      WEB_READ_TIMEOUT: "5m"
+      WEB_MAX_CONNECTIONS: "512"
+      WEB_PAGE_TITLE: "Prometheus Time Series Collection and Processing Server"
+      WEB_CORS_ORIGIN: ".*"
+      STORAGE_TSDB_RETENTION_TIME: "15d"
+      RULES_ALERT_FOR_OUTAGE_TOLERANCE: "1h"
+      RULES_ALERT_FOR_GRACE_PERIOD: "10m"
+      RULES_ALERT_RESEND_DELAY: "1m"
+      ALERTMANAGER_NOTIFICATION_QUEUE_CAPACITY: "10000"
+      ALERTMANAGER_TIMEOUT: "10s"
+      QUERY_LOOKBACK_DELTA: "5m"
+      QUERY_TIMEOUT: "2m"
+      QUERY_MAX_CONCURRENCY: "10"
+      QUERY_MAX_SAMPLES: "50000000"
+      LOG_LEVEL: "info"
+      LOG_FORMAT: "logfmt"
+    volumes:
+      - '/etc/prometheus:/etc/prometheus'
+      - '/media/storage/prometheus:/data'
+    restart: unless-stopped
