@@ -2,6 +2,12 @@
 
 EXIT_CODE=0
 
+display_usage() {
+    echo "Usage:"
+    echo "    $0 ARCHITECTURE TAG"
+    echo "Example: $0 linux_amd64 mydockeruser/repository:latest"
+}
+
 if [ -z "$1" ]; then
     echo "Architecture must be provided!" 1>&2
     EXIT_CODE=1
@@ -12,7 +18,13 @@ else
     fi
 fi
 
+if [ -z "$2" ]; then
+    echo "Tag must be provided!" 1>&2
+    EXIT_CODE=3
+fi
+
 if [ $EXIT_CODE -ne 0 ]; then
+    display_usage
     exit $EXIT_CODE
 fi
 
@@ -36,9 +48,10 @@ build_docker() {
 }
 
 ARCH="$1"
+TAG="$2"
 echo "Building Docker image for architecture: $ARCH"
 copy_binaries $ARCH
-build_docker serbannistor/prometheus:latest
+build_docker $TAG
 cleanup_binaries
 
 exit $EXIT_CODE
